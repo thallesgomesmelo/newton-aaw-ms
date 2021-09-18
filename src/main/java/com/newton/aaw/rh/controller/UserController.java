@@ -15,16 +15,26 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.newton.aaw.rh.api.UserDto;
 import com.newton.aaw.rh.domain.entity.User;
-import com.newton.aaw.rh.exception.NotFoundException;
 import com.newton.aaw.rh.service.UserService;
 
+//Controller so reconhece a classe service.
 @RestController
 public class UserController {
 
+	//Criou UserService pra poder chamar a classe UserService
 	private final UserService userService;
 	
+	//Esta pegando o serviço que criou em cima e esta injetando nesta classe pra poder usar ele.
 	public UserController(UserService userService) {
 		this.userService = userService;
+	}
+	
+	//O pathVariable esta pegando o id do prametro e enviando pro id da rota no getMapping.
+	@GetMapping("/users/{id}")
+	public UserDto getById(@PathVariable String id) {
+		var user = userService.get(id);
+		
+		return new UserDto(user);
 	}
 	
 	@GetMapping("/users")
@@ -32,6 +42,7 @@ public class UserController {
 		var users = userService.getAll();
 		var userDtos = new ArrayList<UserDto>();
 		
+		//Pecorre os usuario e vai adicionando a lista.
 		for(var user: users) {
 			userDtos.add(new UserDto(user));
 		}
@@ -49,7 +60,7 @@ public class UserController {
 	}
 	
 	@PutMapping("/users/{id}")
-	public UserDto update(@PathVariable Integer id, @RequestBody UserDto u) throws NotFoundException {
+	public UserDto update(@PathVariable String id, @RequestBody UserDto u) {
 		var user = new User(u);
 		
 		user = userService.update(id, user);
@@ -57,8 +68,9 @@ public class UserController {
 		return new UserDto(user);
 	}
 	
+	//Delete tem que responder codigo 204 do http 
 	@DeleteMapping("/users/{id}")
-	public ResponseEntity<Void> delete(@PathVariable Integer id) throws NotFoundException {
+	public ResponseEntity<Void> delete(@PathVariable String id) {
 		userService.delete(id);
 		
 		return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);

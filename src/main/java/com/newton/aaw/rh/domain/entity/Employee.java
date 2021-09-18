@@ -3,6 +3,7 @@ package com.newton.aaw.rh.domain.entity;
 import java.time.LocalDate;
 
 import com.newton.aaw.rh.api.EmployeeDto;
+import com.newton.aaw.rh.domain.enums.Gender;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -24,6 +25,7 @@ public class Employee {
 	private Float monthlySalary;
 	private Float hourSalary;
 	private String area;
+	private Gender gender;
 	
 	public Employee(EmployeeDto employeeDto) {
 		this.id = employeeDto.getId();

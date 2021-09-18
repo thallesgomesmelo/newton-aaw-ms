@@ -9,29 +9,32 @@ import java.util.Map;
 import org.springframework.stereotype.Service;
 
 import com.newton.aaw.rh.domain.entity.User;
+import com.newton.aaw.rh.domain.repository.UserRepository;
 import com.newton.aaw.rh.exception.NotFoundException;
 
 @Service
 public class UserService {
-
-	private static int id = 0;
 	//Pq não tem banco de dados criou um mapa de objeto em memória, mapa de chave valor
-	private Map<Integer, User> users = new HashMap<Integer, User>();
+	//	private Map<String, User> users = new HashMap<String, User>();
+	
+	//Usando agora o Banco de dados
+	private final UserRepository userRepository;
+	
+	public UserService(UserRepository userRepository) {
+		this.userRepository = userRepository;
+	}
 	
 	//C - CRUD(Criando)
 	public User create(User u) {
-		u.setId(++id);
-		
 		u.setCreatedAt(LocalDateTime.now());
 		u.setModifiedAt(LocalDateTime.now());
 		
-		users.put(id, u);
-		
+		userRepository.save(u);
 		return u;
 	}
 	
 	//U - CRUD(Atualizar)
-	public User update(Integer id, User u) throws NotFoundException {
+	public User update(String id, User u) {
 		//Recuperar para validar se existe
 		var existing = get(id);
 		
@@ -43,31 +46,32 @@ public class UserService {
 		
 		existing.setModifiedAt(LocalDateTime.now());
 		
+		userRepository.save(existing);
 		return existing;
 	}
 	
 	// R - CRUD(Lendo)
-	public User get(Integer id) throws NotFoundException {
+	public User get(String id) {
 		
-		var user = users.get(id);
+		var user = userRepository.findById(id);
 		
-		if(user == null) {
+		if(user.isEmpty()) {
 			throw new NotFoundException("User with ID " + id + " not found"); 
 		}
 		
-		return user;
+		return user.get();
 	}
 	
-	//R - CRUD(Lendo todos)
+	//R - CRUD(Lendo todos, getAll)
 	public List<User> getAll() {
-		return new ArrayList<>(users.values());		
+		return userRepository.findAll();		
 	}
 	
 	//D - CRUD(Deleta)
-	public void delete(Integer id) throws NotFoundException {
+	public void delete(String id) {
 		//Recuperar para validar se existe
 		get(id);
-		
-		users.remove(id);
+	
+		userRepository.deleteById(id);
 	}
 }

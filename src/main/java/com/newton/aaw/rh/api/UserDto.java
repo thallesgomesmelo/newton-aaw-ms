@@ -9,12 +9,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+//Esta convertendo as informações do microsserviço pro cliente
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserDto {
-	private Integer id;
+	private String id;
 	private String name;	
 	private String password;
 	private String email;
@@ -22,7 +23,7 @@ public class UserDto {
 	private LocalDateTime createdAt;
 	private LocalDateTime modifiedAt;
 	
-	//Construtor Entidade para Dto
+	//Construtor Entidade para Dto. Pega o Dto e passa pra User.
 	public UserDto(User u) {
 		this.id = u.getId();
 		this.name = u.getName();
