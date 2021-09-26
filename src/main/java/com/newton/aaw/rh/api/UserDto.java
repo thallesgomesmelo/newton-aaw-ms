@@ -3,13 +3,14 @@ package com.newton.aaw.rh.api;
 import java.time.LocalDateTime;
 
 import com.newton.aaw.rh.domain.entity.User;
+import com.newton.aaw.rh.domain.enums.Gender;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-//Esta convertendo as informações do microsserviço pro cliente
+//Esta convertendo as informacoes do microsservico pro cliente
 @Getter
 @Setter
 @AllArgsConstructor
@@ -20,6 +21,8 @@ public class UserDto {
 	private String password;
 	private String email;
 	private String mobile;
+	private Gender status;
+	private Gender role;
 	private LocalDateTime createdAt;
 	private LocalDateTime modifiedAt;
 	
@@ -30,6 +33,9 @@ public class UserDto {
 		this.password = u.getPassword();
 		this.email = u.getEmail();
 		this.mobile = u.getMobile();
+		this.status = u.getStatus();
+		this.role = u.getRole();
+		
 		this.createdAt = u.getCreatedAt();
 		this.modifiedAt = u.getModifiedAt();
 	}

@@ -14,7 +14,7 @@ import com.newton.aaw.rh.exception.NotFoundException;
 
 @Service
 public class UserService {
-	//Pq não tem banco de dados criou um mapa de objeto em memória, mapa de chave valor
+	//Pq nao tem banco de dados criou um mapa de objeto em memoria, mapa de chave valor
 	//	private Map<String, User> users = new HashMap<String, User>();
 	
 	//Usando agora o Banco de dados

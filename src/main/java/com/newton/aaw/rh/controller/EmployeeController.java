@@ -14,18 +14,21 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.newton.aaw.rh.api.EmployeeDto;
-import com.newton.aaw.rh.api.UserDto;
 import com.newton.aaw.rh.domain.entity.Employee;
-import com.newton.aaw.rh.domain.entity.User;
-import com.newton.aaw.rh.exception.NotFoundException;
 import com.newton.aaw.rh.service.EmployeeService;
 
+import lombok.AllArgsConstructor;
+
 @RestController
+@AllArgsConstructor
 public class EmployeeController {
 	private final EmployeeService employeeService;
 	
-	public EmployeeController(EmployeeService employeeService) {
-		this.employeeService = employeeService;
+	@GetMapping("/employees/{id}")
+	public EmployeeDto getById(@PathVariable String id) {
+		var employee = employeeService.get(id);
+		
+		return new EmployeeDto(employee);
 	}
 	
 	@GetMapping("/employees")
@@ -50,7 +53,7 @@ public class EmployeeController {
 	}
 	
 	@PutMapping("/employees/{id}")
-	public EmployeeDto update(@PathVariable Integer id, @RequestBody EmployeeDto em) throws NotFoundException {
+	public EmployeeDto update(@PathVariable String id, @RequestBody EmployeeDto em) {
 		var employee = new Employee(em);
 		
 		employee = employeeService.update(id, employee);
@@ -59,7 +62,7 @@ public class EmployeeController {
 	}
 	
 	@DeleteMapping("/employees/{id}")
-	public ResponseEntity<Void> delete(@PathVariable Integer id) throws NotFoundException {
+	public ResponseEntity<Void> delete(@PathVariable String id) {
 		employeeService.delete(id);
 		
 		return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);

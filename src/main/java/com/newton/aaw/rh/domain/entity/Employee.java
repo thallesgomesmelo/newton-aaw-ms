@@ -1,6 +1,9 @@
 package com.newton.aaw.rh.domain.entity;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+
+import org.springframework.data.annotation.Id;
 
 import com.newton.aaw.rh.api.EmployeeDto;
 import com.newton.aaw.rh.domain.enums.Gender;
@@ -15,25 +18,31 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Employee {
-	private Integer id;
+	@Id
+	private String id;
 	private String firstName;
 	private String lastName;
-	private LocalDate dateOfBirth;
+	private LocalDate dateOfBirth; //yyyy-mm-dd
+	private Gender gender;
 	private LocalDate startDate;
 	private LocalDate endDate;
 	private String position;
 	private Float monthlySalary;
 	private Float hourSalary;
 	private String area;
-	private Gender gender;
+	private LocalDateTime createAt; //yyyy-mm-dd hh:mm:ss
+	private LocalDateTime modifiedAt;
 	
-	public Employee(EmployeeDto employeeDto) {
-		this.id = employeeDto.getId();
-		this.firstName = employeeDto.getFirstName();
-		this.lastName = employeeDto.getLastName();
-		this.position = employeeDto.getPosition();
-		this.monthlySalary = employeeDto.getMonthlySalary();
-		this.hourSalary = employeeDto.getHourSalary();
-		this.area = employeeDto.getArea();
+	public Employee(EmployeeDto em) {
+		this.firstName = em.getFirstName();
+		this.lastName = em.getLastName();
+		this.dateOfBirth = em.getDateOfBirth();
+		this.gender = em.getGender();
+		this.startDate = em.getStartDate();
+		this.endDate = em.getEndDate();
+		this.position = em.getPosition();
+		this.monthlySalary = em.getMonthlySalary();
+		this.hourSalary = em.getHourSalary();
+		this.area = em.getArea();
 	}
 }

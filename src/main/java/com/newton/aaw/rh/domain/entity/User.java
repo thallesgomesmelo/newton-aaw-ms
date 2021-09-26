@@ -23,17 +23,19 @@ public class User {
 	private String password;
 	private String email;
 	private String mobile;
-	private LocalDateTime createdAt; //Usuario não envia esse dado, só o banco de dados por isso não usou na classe a baixo.
-	private LocalDateTime modifiedAt; //Usuario não envia esse dado, só o banco de dados por isso não usou na classe a baixo.
 	private Gender status;
 	private Gender role;	
-
-	//Esta pegando um Dto e transformando em um User. User que ler é o banco de dados.
+	private LocalDateTime createdAt; //Usuario nao envia esse dado, so o banco de dados por isso nao usou na classe a baixo.
+	private LocalDateTime modifiedAt; //Usuario nao envia esse dado, so o banco de dados por isso nao usou na classe a baixo.
+	
+	//Esta pegando um Dto e transformando em um User. User que ler e o banco de dados.
 	public User(UserDto userDto) {
 		this.id = userDto.getId();
 		this.name = userDto.getName();
 		this.password = userDto.getPassword();
 		this.email = userDto.getEmail();
-		this.mobile = userDto.getMobile();		
+		this.mobile = userDto.getMobile();
+		this.status = userDto.getStatus();
+		this.role = userDto.getRole();
 	}
 }

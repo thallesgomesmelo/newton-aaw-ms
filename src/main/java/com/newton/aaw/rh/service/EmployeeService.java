@@ -1,57 +1,75 @@
 package com.newton.aaw.rh.service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Service;
 
 import com.newton.aaw.rh.domain.entity.Employee;
+import com.newton.aaw.rh.domain.repository.EmployeeRepository;
 import com.newton.aaw.rh.exception.NotFoundException;
 
+import lombok.AllArgsConstructor;
+
 @Service
-public class EmployeeService {
-	private static int id=0;
-	private Map<Integer, Employee> employees = new HashMap<Integer, Employee>();
+@AllArgsConstructor
+public class EmployeeService {	
+	
+	private final EmployeeRepository employeeRepository;
+	
+//	private Map<Integer, Employee> employees = new HashMap<Integer, Employee>();
 
 	public Employee create(Employee em) {
-		em.setId(++id);
+		var now = LocalDateTime.now();
 		
-		employees.put(id, em);
+		em.setCreateAt(now);
+		em.setModifiedAt(now);
+		
+		employeeRepository.save(em);
 		
 		return em;
 	}
 	
-	public Employee update(Integer id, Employee em) throws NotFoundException {
+	public Employee update(String id, Employee em) {
 		var existing = get(id);
 		
 		existing.setFirstName(em.getFirstName());
 		existing.setLastName(em.getLastName());
+		existing.setDateOfBirth(em.getDateOfBirth());
+		existing.setGender(em.getGender());
+		existing.setStartDate(em.getStartDate());
+		existing.setEndDate(em.getEndDate());
 		existing.setPosition(em.getPosition());
 		existing.setMonthlySalary(em.getMonthlySalary());
 		existing.setHourSalary(em.getHourSalary());
 		existing.setArea(em.getArea());
 		
+		existing.setModifiedAt(LocalDateTime.now());
+		
+		employeeRepository.save(existing);
 		return existing;
 	}
 	
-	public Employee get(Integer id) throws NotFoundException {
-		var employee = employees.get(id);
+	public Employee get(String id) {
+		var employee = employeeRepository.findById(id);
 		
-		if(employee == null) {
+		if(employee.isEmpty()) {
 			throw new NotFoundException("Employee with ID " + id + " not found"); 
 		}
 		
-		return employee;
+		return employee.get();
 	}
 	
 	public List<Employee> getAll(){
-		return new ArrayList<>(employees.values());
+		return employeeRepository.findAll();
 	}
 	
-	public void delete(Integer id) throws NotFoundException {
+	public void delete(String id) {
 		get(id);
-		employees.remove(id);
+		employeeRepository.deleteById(id);
 	}
 }

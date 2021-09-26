@@ -24,7 +24,7 @@ public class UserController {
 	//Criou UserService pra poder chamar a classe UserService
 	private final UserService userService;
 	
-	//Esta pegando o serviço que criou em cima e esta injetando nesta classe pra poder usar ele.
+	//Esta pegando o servico que criou em cima e esta injetando nesta classe pra poder usar ele.
 	public UserController(UserService userService) {
 		this.userService = userService;
 	}
