@@ -9,12 +9,12 @@ import com.newton.aaw.rh.api.EmployeeDto;
 import com.newton.aaw.rh.domain.enums.Gender;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.With;
 
-@Getter
-@Setter
+@Data    //Agrupa varias anotacoe em uma so
+@With    //Permite construir atributos parciais, não precisa informar todos os atributos do employee, so o nome ou lasname ja aceita
 @AllArgsConstructor
 @NoArgsConstructor
 public class Employee {

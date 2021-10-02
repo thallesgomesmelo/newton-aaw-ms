@@ -23,7 +23,7 @@ class EmployeeTest {
 		dto.setEndDate(LocalDate.of(2021, 9, 20));
 		dto.setPosition("QA Engineer");
 		dto.setMonthlySalary(4500.0f);
-		dto.setHourSalary("25.0f");
+		dto.setHourSalary(25.0f);
 		dto.setArea("Marketing");	
 		
 		//Test: 

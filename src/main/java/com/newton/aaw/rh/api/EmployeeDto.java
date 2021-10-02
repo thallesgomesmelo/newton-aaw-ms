@@ -26,7 +26,7 @@ public class EmployeeDto {
 	private LocalDate endDate;
 	private String position;
 	private Float monthlySalary;
-	private String hourSalary;
+	private Float hourSalary;
 	private String area;
 	private LocalDateTime createAt; //yyyy-mm-dd hh:mm:ss
 	private LocalDateTime modifiedAt;
