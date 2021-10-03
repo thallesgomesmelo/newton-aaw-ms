@@ -23,8 +23,10 @@ public class UserService {
 	
 	//C - CRUD(Criando)
 	public User create(User u) {
-		u.setCreatedAt(LocalDateTime.now());
-		u.setModifiedAt(LocalDateTime.now());
+		var now = LocalDateTime.now();
+		
+		u.setCreatedAt(now);
+		u.setModifiedAt(now);
 		
 		userRepository.save(u);
 		return u;
@@ -40,6 +42,8 @@ public class UserService {
 		existing.setPassword(u.getPassword());
 		existing.setEmail(u.getEmail());
 		existing.setMobile(u.getMobile());
+		existing.setStatus(u.getStatus());
+		existing.setRole(u.getRole());
 		
 		existing.setModifiedAt(LocalDateTime.now());
 		

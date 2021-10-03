@@ -5,7 +5,8 @@ import java.time.LocalDateTime;
 import org.springframework.data.annotation.Id;
 
 import com.newton.aaw.rh.api.UserDto;
-import com.newton.aaw.rh.domain.enums.Gender;
+import com.newton.aaw.rh.domain.enums.Role;
+import com.newton.aaw.rh.domain.enums.Status;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -23,14 +24,13 @@ public class User {
 	private String password;
 	private String email;
 	private String mobile;
-	private Gender status;
-	private Gender role;	
+	private Status status;
+	private Role role;	
 	private LocalDateTime createdAt; //Usuario nao envia esse dado, so o banco de dados por isso nao usou na classe a baixo.
 	private LocalDateTime modifiedAt; //Usuario nao envia esse dado, so o banco de dados por isso nao usou na classe a baixo.
 	
 	//Esta pegando um Dto e transformando em um User. User que ler e o banco de dados.
 	public User(UserDto userDto) {
-		this.id = userDto.getId();
 		this.name = userDto.getName();
 		this.password = userDto.getPassword();
 		this.email = userDto.getEmail();
