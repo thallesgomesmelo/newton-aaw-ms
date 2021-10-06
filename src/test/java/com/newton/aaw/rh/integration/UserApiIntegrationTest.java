@@ -1,5 +1,7 @@
 package com.newton.aaw.rh.integration;
 
+import java.util.ArrayList;
+
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +13,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import com.newton.aaw.rh.controller.UserController;
+import com.newton.aaw.rh.domain.entity.User;
 import com.newton.aaw.rh.exception.NotFoundException;
 import com.newton.aaw.rh.service.UserService;
 
@@ -45,13 +48,16 @@ public class UserApiIntegrationTest {
 		//Given
 		var id = "0001";
 		
+		//Mock definitions
+			Mockito.when(userService.get(id)).thenReturn(new User());
+				
 		//test//Assert
-				mockMvc.perform(MockMvcRequestBuilders.delete("/users/" + id))
+			mockMvc.perform(MockMvcRequestBuilders.get("/users/" + id))
 					.andDo(MockMvcResultHandlers.print())
-					.andExpect(MockMvcResultMatchers.status().isNoContent());
+					.andExpect(MockMvcResultMatchers.status().isOk());
 				
 		//Verify
-		Mockito.verify(userService).delete(id);
+		Mockito.verify(userService).get(id);
 	}
 	
 	@Test
@@ -71,5 +77,71 @@ public class UserApiIntegrationTest {
 		Mockito.verify(userService).delete(id);
 	}
 	
+	@Test
+	void test_delete_withValidId_shouldReturn202() throws Exception {
+		//Given
+		var id = "0001";
+				
+		//test//Assert
+			mockMvc.perform(MockMvcRequestBuilders.delete("/users/" + id))
+				.andDo(MockMvcResultHandlers.print())
+				.andExpect(MockMvcResultMatchers.status().isNoContent());
+				
+		//Verify
+		Mockito.verify(userService).delete(id);
+	}
+	
+	@Test
+	void test_getAll_returnOk() throws Exception {
+		//Given
+		var list = new ArrayList<User>();
+		list.add(new User());
+		
+		//Mock
+		Mockito.when(userService.getAll()).thenReturn(list);
+		
+		//Test//Assert
+		mockMvc.perform(MockMvcRequestBuilders.get("/users/"))
+			.andDo(MockMvcResultHandlers.print())
+			.andExpect(MockMvcResultMatchers.status().isOk());
+		
+		//Verify
+		Mockito.verify(userService).getAll();
+	}
+	
+	@Test
+	void test_create() {
+		//Given
+		var user = new User();
+		
+		//Mock
+//		Mockito.when(userService.create(user)).thenReturn(user);
+		
+		//Test
+//		mockMvc.perform(MockMvcRequestBuilders.create(user))
+//			.andDo(MockMvcResultHandlers.print())
+//			.andExpect(MockMvcResultMatchers.status().isOk());
+
+		
+	}
+	
+	@Test
+	void test_update() {
+		//Given
+		var user = new User();
+		var id = "0001";
+		
+		
+		//Mock
+//		Mockito.when(userService.update(user)).thenReturn(user);
+		
+		//Test
+//		mockMvc.perform(MockMvcRequestBuilders.create(user))
+//			.andDo(MockMvcResultHandlers.print())
+//			.andExpect(MockMvcResultMatchers.status().isOk());
+		
+		//Verify
+//		Mockito.verify(userService).update(id, user);
+	}
 
 }
