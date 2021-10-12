@@ -1,5 +1,7 @@
 package com.newton.aaw.rh.integration;
 
+import java.util.ArrayList;
+
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -87,5 +89,23 @@ public class EmployeeApiIntegrationTest { //Class vai test a camada rest da Api
 		
 		//Verify
 		Mockito.verify(employeeService).delete(id);
+	}
+	
+	@Test
+	void test_getAll_returnOk() throws Exception {
+		//Given
+		var list = new ArrayList<Employee>();
+		list.add(new Employee());
+		
+		//Mock
+		Mockito.when(employeeService.getAll()).thenReturn(list);
+		
+		//Test//Assert
+		mockMvc.perform(MockMvcRequestBuilders.get("/employees/"))
+			.andDo(MockMvcResultHandlers.print())
+			.andExpect(MockMvcResultMatchers.status().isOk());
+		
+		//Verify
+		Mockito.verify(employeeService).getAll();
 	}
 }

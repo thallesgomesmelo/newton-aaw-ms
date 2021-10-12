@@ -115,9 +115,9 @@ public class UserApiIntegrationTest {
 		var user = new User();
 		
 		//Mock
-//		Mockito.when(userService.create(user)).thenReturn(user);
+		Mockito.when(userService.create(user)).thenReturn(user);
 		
-		//Test
+//		//Test
 //		mockMvc.perform(MockMvcRequestBuilders.create(user))
 //			.andDo(MockMvcResultHandlers.print())
 //			.andExpect(MockMvcResultMatchers.status().isOk());
