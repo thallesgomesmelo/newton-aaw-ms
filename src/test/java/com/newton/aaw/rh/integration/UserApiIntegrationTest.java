@@ -110,7 +110,7 @@ public class UserApiIntegrationTest {
 	}
 	
 	@Test
-	void test_create() {
+	void test_create_returnOk() {
 		//Given
 		var user = new User();
 		
@@ -118,30 +118,31 @@ public class UserApiIntegrationTest {
 		Mockito.when(userService.create(user)).thenReturn(user);
 		
 //		//Test
-//		mockMvc.perform(MockMvcRequestBuilders.create(user))
+//		mockMvc.perform(MockMvcRequestBuilders.(user))
 //			.andDo(MockMvcResultHandlers.print())
 //			.andExpect(MockMvcResultMatchers.status().isOk());
 
+		//Verify
+//		Mockito.verify(userService).create(new User());
 		
 	}
 	
 	@Test
-	void test_update() {
+	void test_update() throws Exception {
 		//Given
 		var user = new User();
 		var id = "0001";
-		
-		
+				
 		//Mock
-//		Mockito.when(userService.update(user)).thenReturn(user);
+		Mockito.when(userService.get(id)).thenReturn(user);
 		
 		//Test
-//		mockMvc.perform(MockMvcRequestBuilders.create(user))
-//			.andDo(MockMvcResultHandlers.print())
-//			.andExpect(MockMvcResultMatchers.status().isOk());
+		mockMvc.perform(MockMvcRequestBuilders.get("/users/" + id))
+			.andDo(MockMvcResultHandlers.print())
+			.andExpect(MockMvcResultMatchers.status().isOk());
 		
 		//Verify
-//		Mockito.verify(userService).update(id, user);
+		Mockito.verify(userService).update(id, user);
 	}
 
 }

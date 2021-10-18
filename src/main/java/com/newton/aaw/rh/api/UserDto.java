@@ -27,6 +27,11 @@ public class UserDto {
 	private LocalDateTime createdAt;
 	private LocalDateTime modifiedAt;
 	
+	// data de login
+	private LocalDateTime loggedInAt;
+	// data de logout
+	private LocalDateTime loggedOutAt;
+	
 	//Construtor Entidade para Dto. Pega o Dto e passa pra User.
 	public UserDto(User u) {
 		this.id = u.getId();
@@ -39,5 +44,8 @@ public class UserDto {
 		
 		this.createdAt = u.getCreatedAt();
 		this.modifiedAt = u.getModifiedAt();
+
+		this.loggedInAt = u.getLoggedInAt();
+		this.loggedOutAt = u.getLoggedOutAt();
 	}
 }
