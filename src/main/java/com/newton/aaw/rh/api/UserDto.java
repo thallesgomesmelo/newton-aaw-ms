@@ -27,9 +27,9 @@ public class UserDto {
 	private LocalDateTime createdAt;
 	private LocalDateTime modifiedAt;
 	
-	// data de login
+	// data login
 	private LocalDateTime loggedInAt;
-	// data de logout
+	// data logout
 	private LocalDateTime loggedOutAt;
 	
 	//Construtor Entidade para Dto. Pega o Dto e passa pra User.

@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.newton.aaw.rh.domain.entity.User;
 import com.newton.aaw.rh.domain.repository.UserRepository;
+import com.newton.aaw.rh.exception.BadRequestException;
 import com.newton.aaw.rh.exception.NotAuthorizedException;
 import com.newton.aaw.rh.exception.NotFoundException;
 
@@ -19,6 +20,11 @@ public class AuthenticationService {
 	
 	
 	public User login(String userName, String password) {
+		// 0. Quando usuario e senha vazio
+		if(userName == null || userName.trim().isEmpty() || password == null || password.trim().isEmpty()) {
+			throw new BadRequestException("Parametros inválidos.");
+		}
+		
 		// 1. verificar o nome do usuario		
 		var user = userRepository.findOneByName(userName);
 		if (user.isEmpty()) {
@@ -33,7 +39,7 @@ public class AuthenticationService {
 		
 		// 3. atualizar as informacoes de login/logout
 		userExists.setLoggedInAt(LocalDateTime.now());
-		userExists.setLoggedOutAt(null);
+		userExists.setLoggedOutAt(null); //Usado pra falar que o usuario esta logado
 
 		userRepository.save(userExists);
 		
@@ -41,7 +47,7 @@ public class AuthenticationService {
 	}
 	
 	public User logout(String userName) {
-		// 1. verificar o nome do usuario		
+		// 1. verificar se usuario existe		
 		var user = userRepository.findOneByName(userName);
 		if (user.isEmpty()) {
 			throw new NotFoundException("User with name " + userName + " not found!");
@@ -49,7 +55,7 @@ public class AuthenticationService {
 		
 		var userExists = user.get();
 
-		// 2. atualizar as informacoes de login/logout
+		// 2. atualizar as informacoes de logout
 		userExists.setLoggedOutAt(LocalDateTime.now());
 
 		userRepository.save(userExists);

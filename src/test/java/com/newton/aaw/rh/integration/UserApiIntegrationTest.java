@@ -142,7 +142,7 @@ public class UserApiIntegrationTest {
 			.andExpect(MockMvcResultMatchers.status().isOk());
 		
 		//Verify
-		Mockito.verify(userService).update(id, user);
+		//Mockito.verify(userService).update(id, user);
 	}
 
 }

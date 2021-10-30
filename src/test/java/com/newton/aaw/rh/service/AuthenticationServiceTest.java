@@ -17,6 +17,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import com.newton.aaw.rh.domain.entity.User;
 import com.newton.aaw.rh.domain.repository.UserRepository;
 import com.newton.aaw.rh.exception.NotAuthorizedException;
+import com.newton.aaw.rh.exception.NotFoundException;
 
 @ExtendWith(MockitoExtension.class)
 class AuthenticationServiceTest {
@@ -42,7 +43,7 @@ class AuthenticationServiceTest {
 		
 		try {
 			// test
-			unit.login(name, null);
+			unit.login(name, "123456789");
 			
 			fail("Expected NotAuthorizedException");			
 		} catch (NotAuthorizedException ex) {
@@ -52,7 +53,7 @@ class AuthenticationServiceTest {
 		
 		// verify
 		Mockito.verify(userRepository).findOneByName(name);
-		Mockito.verifyNoMoreInteractions(userRepository);		
+		Mockito.verifyNoMoreInteractions(userRepository); //Esta testando se o save nao foi chamado	
 	}
 
 
@@ -104,4 +105,53 @@ class AuthenticationServiceTest {
 		Mockito.verify(userRepository).findOneByName(name);
 		Mockito.verify(userRepository).save(user);
 	}
+	
+	@Test
+	void test_logout_withUsernameNotFound_shouldThrowException() {
+		// given
+		var name = "testUser";
+		
+		// mock definitions
+		Mockito.when(userRepository.findOneByName(name))
+			.thenReturn(Optional.empty());
+		
+		try {
+			// test
+			unit.logout(name);
+			
+			fail("Expected NotFoundException");			
+		} catch (NotFoundException ex) {
+			// assert
+			assertEquals("User with name " + name + " not found!", ex.getMessage());
+		}
+		
+		// verify
+		Mockito.verify(userRepository).findOneByName(name);
+		Mockito.verifyNoMoreInteractions(userRepository);		
+	}
+	@Test
+	void test_logout_withUserIsLogin() {
+		// given
+		var name = "testUser";
+		var user = new User();
+		
+		// mock definitions
+		Mockito.when(userRepository.findOneByName(name))
+			.thenReturn(Optional.of(user));
+		
+		// test
+		var result = unit.logout(name);
+		
+		
+		// verify
+		Mockito.verify(userRepository).findOneByName(name);	
+				
+		// assert
+		assertNotNull(result.getLoggedOutAt());
+			
+		// verify
+		Mockito.verify(userRepository).findOneByName(name);
+		Mockito.verify(userRepository).save(user);
+	}
+	
 }

@@ -29,10 +29,10 @@ public class User {
 	private LocalDateTime createdAt; //Usuario nao envia esse dado, so o banco de dados por isso nao usou na classe a baixo.
 	private LocalDateTime modifiedAt; //Usuario nao envia esse dado, so o banco de dados por isso nao usou na classe a baixo.
 	
-	// data de login
+	// data login
 	private LocalDateTime loggedInAt;
 		
-	// data de logout
+	// data logout
 	private LocalDateTime loggedOutAt;
 		
 	//Esta pegando um Dto e transformando em um User. User que ler e o banco de dados.
