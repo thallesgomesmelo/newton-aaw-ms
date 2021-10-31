@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 
 import org.springframework.stereotype.Service;
 
+import com.newton.aaw.rh.api.UserDto;
 import com.newton.aaw.rh.domain.entity.User;
 import com.newton.aaw.rh.domain.repository.UserRepository;
 import com.newton.aaw.rh.exception.BadRequestException;
@@ -17,9 +18,9 @@ import lombok.RequiredArgsConstructor;
 public class AuthenticationService {
 
 	private final UserRepository userRepository;
+	private final TokenService tokenService;
 	
-	
-	public User login(String userName, String password) {
+	public UserDto login(String userName, String password) {
 		// 0. Quando usuario e senha vazio
 		if(userName == null || userName.trim().isEmpty() || password == null || password.trim().isEmpty()) {
 			throw new BadRequestException("Parametros inválidos.");
@@ -43,7 +44,12 @@ public class AuthenticationService {
 
 		userRepository.save(userExists);
 		
-		return userExists;		
+		//adicionar a geracao do token JWT. Convertendo o user em um UserDto
+		var token = tokenService.generateToken(userExists);
+		var userDto = new UserDto(userExists);
+		userDto.setToken(token);
+		
+		return userDto;		
 	}
 	
 	public User logout(String userName) {

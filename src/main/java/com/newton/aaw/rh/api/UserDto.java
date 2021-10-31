@@ -32,6 +32,9 @@ public class UserDto {
 	// data logout
 	private LocalDateTime loggedOutAt;
 	
+	//devolvido o token pro usuario
+	private String token;
+	
 	//Construtor Entidade para Dto. Pega o Dto e passa pra User.
 	public UserDto(User u) {
 		this.id = u.getId();
