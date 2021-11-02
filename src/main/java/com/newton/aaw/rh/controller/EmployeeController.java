@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.newton.aaw.rh.api.EmployeeDto;
+import com.newton.aaw.rh.api.EmployeesResource;
 import com.newton.aaw.rh.domain.entity.Employee;
 import com.newton.aaw.rh.service.EmployeeService;
 
@@ -21,17 +22,17 @@ import lombok.AllArgsConstructor;
 
 @RestController
 @AllArgsConstructor
-public class EmployeeController {
+public class EmployeeController implements EmployeesResource {
 	private final EmployeeService employeeService;
 	
-	@GetMapping("/employees/{id}")
+	@Override
 	public EmployeeDto getById(@PathVariable String id) {
 		var employee = employeeService.get(id);
 		
 		return new EmployeeDto(employee);
 	}
 	
-	@GetMapping("/employees")
+	@Override
 	public List<EmployeeDto> getAll() {
 		var employees = employeeService.getAll();
 		var employeeDtos = new ArrayList<EmployeeDto>();
@@ -43,16 +44,16 @@ public class EmployeeController {
 		return employeeDtos;
 	}
 	
-	@PostMapping("/employees")
-	public EmployeeDto create(@RequestBody EmployeeDto em) {
+	@Override
+	public ResponseEntity<EmployeeDto> create(@RequestBody EmployeeDto em) {
 		var employee = new Employee(em);
 		
 		employee = employeeService.create(employee);
 		
-		return new EmployeeDto(employee);
+		return ResponseEntity.status(HttpStatus.CREATED).body(new EmployeeDto(employee));
 	}
 	
-	@PutMapping("/employees/{id}")
+	@Override
 	public EmployeeDto update(@PathVariable String id, @RequestBody EmployeeDto em) {
 		var employee = new Employee(em);
 		
@@ -61,7 +62,7 @@ public class EmployeeController {
 		return new EmployeeDto(employee);
 	}
 	
-	@DeleteMapping("/employees/{id}")
+	@Override
 	public ResponseEntity<Void> delete(@PathVariable String id) {
 		employeeService.delete(id);
 		

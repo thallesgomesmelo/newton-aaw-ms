@@ -28,8 +28,11 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	
 	implementation 'javax.xml.bind:jaxb-api:2.1'
-	//Biblioteca de processamento de token JWT
+	// biblioteca de processamento de tokens JWT
 	implementation 'io.jsonwebtoken:jjwt:0.9.1'
+	
+	// u6: dependência para documentação
+	implementation "org.springdoc:springdoc-openapi-ui:1.4.1"	
 }
 
 test {
