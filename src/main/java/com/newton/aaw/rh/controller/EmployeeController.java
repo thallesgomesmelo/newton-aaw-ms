@@ -15,17 +15,23 @@ import com.newton.aaw.rh.domain.entity.Employee;
 import com.newton.aaw.rh.service.EmployeeService;
 
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @AllArgsConstructor
+@Slf4j
 public class EmployeeController implements EmployeesResource {
 	private final EmployeeService employeeService;
 	
 	@Override
 	public EmployeeDto getById(@PathVariable String id) {
+		log.info("GET employee by Id: {}", id);
 		var employee = employeeService.get(id);
 		
-		return new EmployeeDto(employee);
+		var response = new EmployeeDto(employee);
+		log.info("GET employee by ID {} response: {}", id, response);
+		
+		return response;
 	}
 	
 	@Override
@@ -42,11 +48,15 @@ public class EmployeeController implements EmployeesResource {
 	
 	@Override
 	public ResponseEntity<EmployeeDto> create(@RequestBody EmployeeDto em) {
+		log.info("POST create employee: {}", em);
 		var employee = new Employee(em);
 		
 		employee = employeeService.create(employee);
 		
-		return ResponseEntity.status(HttpStatus.CREATED).body(new EmployeeDto(employee));
+		var dto = new EmployeeDto(employee);
+		log.info("POST create employee response: {}", dto);
+		
+		return ResponseEntity.status(HttpStatus.CREATED).body(dto);
 	}
 	
 	@Override
@@ -60,6 +70,7 @@ public class EmployeeController implements EmployeesResource {
 	
 	@Override
 	public ResponseEntity<Void> delete(@PathVariable String id) {
+		log.info("DELETE employee by Id: {}", id);
 		employeeService.delete(id);
 		
 		return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);

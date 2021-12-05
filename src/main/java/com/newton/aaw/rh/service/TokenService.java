@@ -11,6 +11,7 @@ import com.newton.aaw.rh.exception.TokenExpiredException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 
 /**
  * 1. criar o token do zero: login
@@ -28,7 +29,7 @@ public class TokenService {
 	//5 minutos
 	public static final int EXPIRATION_TIME_MS = 5 * 60 * 1000;
 	
-	private static final String SECRET = "chaveAleatoria";
+	private static final String SECRET = "chaveAleatoria123";
 	
 	//Etapa 1
 	public String generateToken(User user) {
@@ -45,7 +46,7 @@ public class TokenService {
 			.setIssuedAt(new Date(System.currentTimeMillis()))
 			.setSubject(user.getName().concat(":").concat(user.getEmail()))
 			.setExpiration(exp)
-			.signWith(io.jsonwebtoken.SignatureAlgorithm.HS256, SECRET)
+			.signWith(SignatureAlgorithm.HS256, SECRET)
 			.compact();
 		
 		return token;

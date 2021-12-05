@@ -10,9 +10,11 @@ import com.newton.aaw.rh.domain.repository.EmployeeRepository;
 import com.newton.aaw.rh.exception.NotFoundException;
 
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @AllArgsConstructor
+@Slf4j
 public class EmployeeService {	
 	
 	private final EmployeeRepository employeeRepository;
@@ -26,6 +28,7 @@ public class EmployeeService {
 		em.setModifiedAt(now);
 		
 		employeeRepository.save(em);
+		log.debug("Employee create: {}", em);
 		
 		return em;
 	}
@@ -51,9 +54,13 @@ public class EmployeeService {
 	}
 	
 	public Employee get(String id) {
+		log.debug("Getting Employee by ID: {}", id);
 		var employee = employeeRepository.findById(id);
 		
 		if(employee.isEmpty()) {
+			// logging 404 in console
+			log.error("ERROR: Employee with ID {} not found.", id);
+			// HTTP 404
 			throw new NotFoundException("Employee with ID " + id + " not found"); 
 		}
 		
@@ -65,7 +72,9 @@ public class EmployeeService {
 	}
 	
 	public void delete(String id) {
-		get(id);
+		var employee = get(id);
+		log.debug("Employee DELETE: {}", employee);
+		
 		employeeRepository.deleteById(id);
 	}
 }
